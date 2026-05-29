@@ -514,6 +514,8 @@ def main():
     )
     parser.add_argument("--no-elo", action="store_true", default=False, help="Disable the ELO analysis step.")
     parser.add_argument("--no-rubric", action="store_true", default=False, help="Disable the Rubric scoring step.")
+    parser.add_argument("--truncate-for-rubric", action="store_true", default=True,
+                        help="Enable truncation of transcript/debrief for rubric prompts to fit smaller contexts.")
     parser.add_argument("--redo-rubric-judging", action="store_true", default=False,
                         help="If set, tasks in the local runs file that have completed rubric scoring will be reset so the rubric step is re-run.")
     parser.add_argument(
@@ -598,7 +600,7 @@ def main():
             run_elo=run_elo_flag,
             run_rubric=run_rubric_flag,
             redo_judging=args.redo_rubric_judging,
-            truncate_for_rubric=False, # Hardcoded for now, could be arg
+            truncate_for_rubric=args.truncate_for_rubric,
         )
 
         logging.info(f"EQBench3 run completed. Run key: {run_key}")
