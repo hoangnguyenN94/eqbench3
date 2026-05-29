@@ -69,6 +69,10 @@ CANONICAL_LEADERBOARD_ELO_FILE = os.path.join(DATA_DIR, "canonical_leaderboard_e
 DEFAULT_LOCAL_RUNS_FILE = "eqbench3_runs.json"
 DEFAULT_LOCAL_ELO_FILE = "elo_results_eqbench3.json"
 
+# --- Default Judge Configuration ---
+DEFAULT_JUDGE_API_URL = "https://inference-api.nvidia.com/v1/chat/completions"
+DEFAULT_JUDGE_MODEL = "aws/anthropic/bedrock-claude-opus-4-6"
+
 
 MODEL_NAME_SUBS = {
     'deepseek/deepseek-r1': 'deepseek-ai/DeepSeek-R1',

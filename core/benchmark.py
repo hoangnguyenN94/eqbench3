@@ -710,7 +710,7 @@ def run_eq_bench3(
             if not standard_rubric_criteria: raise ValueError("Standard rubric criteria file is empty.")
             logging.info(f"Loaded {len(standard_rubric_criteria)} standard rubric criteria from {C.STANDARD_RUBRIC_CRITERIA_FILE}")
 
-            output_format_dict_std = {"chain_of_thought_reasoning": "detailed chain of thought reasoning about the coming scoring decisions"}
+            output_format_dict_std = {}
             for criterion in standard_rubric_criteria: output_format_dict_std[criterion] = 0
             standard_rubric_output_format_str = json.dumps(output_format_dict_std, indent=2).replace(': 0', ': 0-20')
 
@@ -731,7 +731,7 @@ def run_eq_bench3(
             if not analysis_rubric_criteria: raise ValueError("Analysis rubric criteria file is empty.")
             logging.info(f"Loaded {len(analysis_rubric_criteria)} analysis rubric criteria from {C.ANALYSIS_RUBRIC_CRITERIA_FILE}")
 
-            output_format_dict_anl = {"chain_of_thought_reasoning": "detailed chain of thought reasoning about the coming scoring decisions"}
+            output_format_dict_anl = {}
             for criterion in analysis_rubric_criteria: output_format_dict_anl[criterion] = 0
             analysis_rubric_output_format_str = json.dumps(output_format_dict_anl, indent=2).replace(': 0', ': 0-20') # Assuming 0-20 scale
 

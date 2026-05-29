@@ -493,7 +493,11 @@ def main():
     # --- Model Identifiers ---
     parser.add_argument("--test-model", required=True, help="Identifier for the model sent to the API (e.g., 'openai/gpt-4o'). This is the API Model ID.")
     parser.add_argument("--model-name", help="Logical identifier for the model (e.g., 'gpt-4o-june-2024') used for tracking and leaderboards. Defaults to the value of --test-model if not provided.")
-    parser.add_argument("--judge-model", help="Identifier for the judge model used for ELO pairwise comparisons and/or Rubric scoring.")
+    parser.add_argument(
+        "--judge-model",
+        default=os.getenv("JUDGE_MODEL", C.DEFAULT_JUDGE_MODEL),
+        help="Identifier for the judge model used for ELO pairwise comparisons and/or Rubric scoring.",
+    )
     # --- File Paths ---
     parser.add_argument("--runs-file", default=C.DEFAULT_LOCAL_RUNS_FILE, help=f"File to store local run data (default: {C.DEFAULT_LOCAL_RUNS_FILE}).")
     parser.add_argument("--elo-results-file", default=C.DEFAULT_LOCAL_ELO_FILE, help=f"File to store local ELO results and comparisons (default: {C.DEFAULT_LOCAL_ELO_FILE}).")

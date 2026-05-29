@@ -8,6 +8,7 @@ import random
 import string
 from typing import Optional, Dict, Any, List # Added List
 from dotenv import load_dotenv
+import utils.constants as C
 
 load_dotenv()
 
@@ -43,7 +44,7 @@ class APIClient:
         elif model_type == "judge":
             # Judge model is used for ELO pairwise comparisons
             self.api_key = os.getenv("JUDGE_API_KEY", os.getenv("OPENAI_API_KEY"))
-            self.base_url = os.getenv("JUDGE_API_URL", os.getenv("OPENAI_API_URL", "https://api.openai.com/v1/chat/completions"))
+            self.base_url = os.getenv("JUDGE_API_URL", os.getenv("OPENAI_API_URL", C.DEFAULT_JUDGE_API_URL))
         else: # Default/fallback
             self.api_key = os.getenv("OPENAI_API_KEY")
             self.base_url = os.getenv("OPENAI_API_URL", "https://api.openai.com/v1/chat/completions")
@@ -231,7 +232,7 @@ class APIClient:
                 is_openai_chat = base_url_trimmed.endswith("/v1/chat/completions") or base_url_trimmed.endswith("/chat/completions")
                 is_local_vllm = isinstance(base_url_trimmed, str) and ("localhost" in base_url_trimmed or "127.0.0.1" in base_url_trimmed)
                 force_reasoning_off = str(os.getenv("REASONING_OFF", "0")).strip().lower() in ("1", "true", "yes", "y")
-                if is_openai_chat and (is_local_vllm or force_reasoning_off):
+                if self.model_type == "test" and is_openai_chat and (is_local_vllm or force_reasoning_off):
                     payload.setdefault("chat_template_kwargs", {})
                     if isinstance(payload["chat_template_kwargs"], dict):
                         payload["chat_template_kwargs"]["enable_thinking"] = False
@@ -309,6 +310,8 @@ class APIClient:
                     base_url_trimmed = str(self.base_url)
                 if base_url_trimmed.endswith('/v1/chat/completions') or base_url_trimmed.endswith('/chat/completions'):
                     payload.pop('min_p', None)
+                    if self.model_type == "judge":
+                        payload.pop("chat_template_kwargs", None)
 
                 # OpenAI-specific adjustments (only when calling api.openai.com)
                 if 'api.openai.com' in (self.base_url or ''):
